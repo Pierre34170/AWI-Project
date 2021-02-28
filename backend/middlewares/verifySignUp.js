@@ -1,5 +1,4 @@
 const Validator = require('validator')
-const isEmpty = require('is-empty')
 
 const db = require("../models");
 const ROLES = db.ROLES;
@@ -8,7 +7,7 @@ const User = db.user;
 checkDuplicateUsernameOrEmail = (req, res, next) => {
 
     //Username
-    User.findOne({ email: req.body.username }).exec((err, user) => {
+    User.findOne({ username: req.body.username }).exec((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
@@ -47,13 +46,25 @@ checkRolesExisted = (req, res, next) => {
             }
         }
     }
+    next()
+}
 
+checkPassword = (req, res, next) => {
+
+    if (!Validator.isLength(req.body.password, { min: 6, max: 30})) {
+        res.status(400).send({ message: "Password must be at least 6 characters!" });
+    }
+
+    if (!Validator.equals(req.body.password, req.body.password2)) {
+        res.status(400).send({ message: "Passwords don't match!" });
+    }
     next()
 }
 
 const verifySignUp = {
     checkDuplicateUsernameOrEmail,
-    checkRolesExisted
+    checkRolesExisted,
+    checkPassword
 }
 
 module.exports = verifySignUp

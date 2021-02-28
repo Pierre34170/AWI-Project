@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-import AuthService from "../services/auth"
-import history from "../history"
+import AuthService from "../../services/authentification/auth"
+import history from "../../history"
+
 export function Login() {
 
     const [errors, setErrors] = useState(null)
@@ -66,10 +67,4 @@ export function Login() {
             <button className="waves-effect waves-light btn" disabled={loading}>Login</button>
         </form>
     )
-}
-
-function Alert({ children }) {
-    return <div className="alert alert-danger">
-        {children}
-    </div>
 }

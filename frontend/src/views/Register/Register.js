@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-const Validator = require('validator')
-const isEmpty = require('is-empty')
 
-import AuthService from "../services/auth"
+import AuthService from "../../services/authentification/auth"
+import history from "../../history"
 
 export function Register() {
 
@@ -29,44 +28,30 @@ export function Register() {
         setPassword2(e.target.value)
     }
 
-    const checkData = function (password, password2, email) {
-        let errors = {}
-
-        email = !isEmpty(email) ? email : ""
-        password = !isEmpty(password) ? password : ""
-        password2 = !isEmpty(password2) ? password2 : ""
-
-        if (!Validator.isEmail(email)) {
-            errors.email = "Email is invalid"
-        }
-
-        if (!Validator.isLength(password, { min: 6, max: 30})) {
-            errors.password = "Password must be at least 6 characters"
-        }
-    
-        if (!Validator.equals(password, password2)) {
-            errors.password2 = "Passwords must match";
-        }
-
-        return errors
-        
-
-    }
-
     const handleSubmit = function (e) {
         setError(null)
         setLoading(true)
         e.preventDefault();
 
-        setError(checkData(password, password2, email))
 
         const data = {
             username: username,
             email: email,
-            password: password1
+            password: password,
+            password2: password2
         }
 
         console.log(data)
+
+        AuthService.register(data.username, data.email, data.password, data.password2).then(
+            () => {
+                history.push('/login')
+                window.location.reload();
+            },
+            error => {
+                setError(error.response.data.message)
+            }
+        )
 
         setLoading(false)
     }
@@ -99,7 +84,14 @@ export function Register() {
                     <label htmlFor="password2">Confirm password</label>
                 </div>
             </div>
-            <a className="waves-effect waves-light btn" disabled={loading}>Sign Up</a>
+            {error && (
+                <div className="form-group">
+                    <div className="alert alert-danger" role="alert">
+                        {error}
+                    </div>
+                </div>
+            )}
+            <button className="waves-effect waves-light btn" disabled={loading}>Sign Up</button>
         </form>
     );
 }
