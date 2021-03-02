@@ -1,44 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthService from "../../services/authentification/auth";
 
-export default class Profile extends React.Component {
+export function Profile() {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentUser: AuthService.getCurrentUser()
-        }
-    }
 
-    render(){
+    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser())
 
-        const { currentUser } = this.state
-
-        return (
-            <div className="container">
-                <header className="jumbotron">
-                    <h3>
-                        <strong>{currentUser.username}</strong> Profile
+    return (
+        <div className="container">
+            <header className="jumbotron">
+                <h3>
+                    <strong>{currentUser.username}</strong> Profile
                     </h3>
-                </header>
-                <p>
-                    <strong>Token:</strong>{" "}
-                    {currentUser.accessToken}
-                </p>
-                <p>
-                    <strong>Id:</strong>{" "}
-                    {currentUser.id}
-                </p>
-                <p>
-                    <strong>Email:</strong>{" "}
-                    {currentUser.email}
-                </p>
-                <strong>Authorities:</strong>
-                <ul>
-                    {currentUser.roles &&
-                        currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-                </ul>
-            </div>
-        )
-    }
+            </header>
+            <p>
+                <strong>Token:</strong>{" "}
+                {currentUser.accessToken}
+            </p>
+            <p>
+                <strong>Id:</strong>{" "}
+                {currentUser.id}
+            </p>
+            <p>
+                <strong>Email:</strong>{" "}
+                {currentUser.email}
+            </p>
+            <strong>Authorities:</strong>
+            <ul>
+                {currentUser.roles &&
+                    currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+            </ul>
+        </div>
+    )
 }

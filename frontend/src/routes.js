@@ -1,37 +1,35 @@
-
 import { Login } from "./views/Login/Login"
-import Landing from "./views/Landing/Landing"
+import { Landing } from "./views/Landing/Landing"
 import { Register } from "./views/Register/Register"
-import Profile from "./views/Profile/Profile"
-import React from 'react'
+import { Profile } from "./views/Profile/Profile"
 
-
-
-type Route = {
+/*
+type Route :
     name: string,
     path: string,
-    component?: React.ComponentType<any>,
+    component?: React.AbstractComponent<any>,
     roles?: string[],
     routes?: Route[],
-}
+*/
 
-const routes : Array<Route> = [
+// Liste des routes
+const routes = [
     {
         'name': 'landing',
         'path': '/',
         'component': Landing,
     },
-    { 
+    {
         'name': 'login',
         'path': '/login',
         'component': Login,
     },
-    { 
+    {
         'name': 'register',
         'path': '/register',
         'component': Register,
     },
-    { 
+    {
         'name': 'profile',
         'path': '/profile',
         'component': Profile,
@@ -39,10 +37,11 @@ const routes : Array<Route> = [
     },
 
 ]
-/*
-const compile = (parentRoute: Route, subRoutes: Array<Route>): Route[] => {
+
+// retourne un tableau de routes mis à plat 
+const compile = function (parentRoute, subRoutes) {
     return subRoutes.flatMap(subRoute => {
-        const newRoute: Route = {
+        const newRoute = {
             'name': subRoute.name,
             'path': parentRoute.path + subRoute.path,
             'component': subRoute.component,
@@ -50,14 +49,29 @@ const compile = (parentRoute: Route, subRoutes: Array<Route>): Route[] => {
         };
         return (subRoute.routes) ? [...compile(newRoute, subRoute.routes)] : newRoute;
     });
- }
- 
- export const getRoutes = () => {
+}
+
+const getRoutes = () => {
     const parentRoute = {
         'name': '',
         'path': '',
     };
     const flatRoutes = compile(parentRoute, routes);
     return flatRoutes;
- }
- */
+}
+
+const getPath = (name, params = null) => {
+    const routeFound = getRoutes().find(route => route.name === name);
+    let path = routeFound ? routeFound.path : null;
+    if (path && params) {
+        Object.entries(params).forEach(([key, value]) => {
+            path = path ? path.replace(`:${key}`, value) : '';
+        });
+    }
+    return path;
+}
+
+export {
+    getRoutes,
+    getPath
+}

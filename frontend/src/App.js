@@ -2,11 +2,11 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import AuthService from "./services/authentification/auth"
+import { getRoutes } from './routes'
 
-import Landing from './views/Landing/Landing'
-import { Register } from './views/Register/Register'
-import { Login } from './views/Login/Login'
-import Profile from './views/Profile/Profile'
+import { NotFound } from './views/NotFound/NotFound'
+
+import { MyRoute } from './components/MyRoute/MyRoute'
 
 export default class App extends React.Component {
 
@@ -40,7 +40,7 @@ export default class App extends React.Component {
         <Router>
           <nav className="blue accent-3">
             <div className="nav-wrapper">
-              <a href="#" className="brand-logo">Logo</a>
+              <a href="/" className="brand-logo">Logo</a>
               <ul id="nav-mobile" className="right hide-on-med-and-down">
                 {currentUser ? (
                   <div>
@@ -58,10 +58,12 @@ export default class App extends React.Component {
           </nav>
           <div className="App">
             <Switch>
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/profile" component={Profile} />
+              {
+                getRoutes().map((route, index) => {
+                  return <MyRoute exact {...route} key={index} />
+                })
+              }
+              <Route component={NotFound} />
             </Switch>
           </div>
         </Router>
@@ -69,3 +71,10 @@ export default class App extends React.Component {
     )
   }
 }
+/*
+<Route exact path="/" component={Landing} />
+  <Route exact path="/register" component={Register} />
+  <Route exact path="/login" component={Login} />
+  <Route exact path="/profile" component={Profile} />
+
+  */

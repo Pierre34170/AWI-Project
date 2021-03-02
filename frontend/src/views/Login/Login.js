@@ -45,14 +45,14 @@ export function Login() {
     return (
         <form className="container mt-4" onSubmit={handleSubmit}>
             <h2>Login</h2>
-            <div class="row">
-                <div class="input-field col s12">
+            <div className="row">
+                <div className="input-field col s12">
                     <input id="username" type="text" className="validate" onChange={handleChangeUsername} required />
                     <label htmlFor="username">Username</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s12">
+            <div className="row">
+                <div className="input-field col s12">
                     <input id="password" type="password" className="validate" onChange={handleChangePassword} required />
                     <label htmlFor="password">Password</label>
                 </div>
