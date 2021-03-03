@@ -6,7 +6,7 @@ pipeline {
         }
     }
     environment {
-        HOME= '.'
+        HOME= './frontend'
         CI = 'true'
         registry = "ayoubmoujane/node-rest-api"
     }
