@@ -6,13 +6,14 @@ pipeline {
         }
     }
     environment {
-        HOME= './frontend'
+        HOME= '.'
         CI = 'true'
         registry = "ayoubmoujane/node-rest-api"
     }
     stages {
         stage('Build') {
             steps {
+                sh 'cd frontend'
                 sh 'npm install'
             }
         }
